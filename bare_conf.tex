@@ -347,10 +347,79 @@
 \IEEEpeerreviewmaketitle
 
 
+
 \section{Einleitung}
+Die Savanne in Afrika gehört zu den, am stärksten bedrohten Ökosystemen unserer Erde. \textbf{QUELLE} hat gezeigt, dass Multiagentensysteme einen wesentlichen Beitrag zur Erforschung dieses Lebensraumes leisten kann.\\
+
+
+
+\section{Die MARS Arbeitsgruppe}
+Die MARS (Multi-Agent Research \& Simulation) Arbeitsgruppe um Prof. Dr. Thiel-Clemen befasst sich daher mit der Erforschung und Entwicklung derartiger Simulationen. \\
+Das MARS Framework besteht aus verschiedenen Komponenten, von denen für diese Arbeit nur die Websuite von Bedeutung ist. Sie ist der eigentlichen Simulation in MARS LIFE vorangestellt und ist für Import, Datenaufbereitung und dem Zusammenfügen von Simulationsmodell und Daten zuständig. \\
+\indent Die einzelnen Komponenten wurden in der Grundseminar Ausarbeitung näher vorgestellt. Einzig der Import ist an dieser Stelle erwähnt, da sich hierbei erhebliche Änderungen ergeben haben.
+
+
+\subsection{MARS Import}
+Der Import soll MARS PHOBOS als Importkomponente ersetzen und befindet sich derzeit in der Entstehung. \\
+PHOBOS basiert auf dem Konzept eines Datawarehouses zur Speicherung von relationalen Daten, wie in der Masterarbeit von Busch\cite{JanBusch}. \\
+Dieser Ansatz hat sich in der Praxis als unflexibel und langsam herausgestellt. Aus diesem Grund besteht der neue Ansatz aus einzelnen Teilprozessen. Diese sind ein Tabellenimport, der tabellarische Daten in einer Tabelle abbildet und einem Zeitreihenimport, der entsprechende 
+	
 
 
 \section{Grundlagen}
+
+
+\subsection{Tabellendaten}
+Tabellendaten in GIS sind im allgemeinen händisch oder automatisch erstellte Tabellen mit Messdaten unterschiedlichster Art.
+als Spezialfall sind Zeitreihendaten zu nennen. Hierbei handelt es Sich um Daten mit einem zeitlichem Ablauf, wie z.B. die Entwicklung von Temperatur über einen bestimmten Zeitraum.
+Die Speicherung solcher Daten sind relationale Datenbanken am besten geeignet. 
+
+
+\subsection{Rasterdaten}
+
+%GeoTIFF
+%GeoTIFF (.geotiff) ist ein Dateiformat zur Speicherung von georeferenzierten Bilddatei-
+%en. Im Gegensatz zum TIFF-Format speichert GeoTIFF zusätzlich zu den Rasterdaten
+%Koordinaten des Bildausschnitts und die verwendete Kartenprojektion. Das TIFF-
+%Format ist ein verlustfreier Datenspeicher, wodurch es sich gut zur Verarbeitung von
+%geografischen Daten eignet. Insbesondere hochauflösende Satelliten- und Luftbilder
+%werden in diesem Format gespeichert.
+
+\subsubsection{Mercator Pyramide}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\columnwidth]{img/mercator_pyramid.png}\\
+	\caption[]{Mercator Kachel Pyramide}
+	\label{img:mercator_pyramid}
+\end{figure}
+
+
+%Zur Verbesserung der Performance, insbesondere beim initialen Laden von großen
+%Rastern und Vergrößern/Verkleinern der Daten, können Raster-Pyramiden verwendet
+%werden. Raster-Pyramiden bestehen aus reduzierten Versionen des ursprünglichen
+%Raster-Datasets. Für jede Ebene in der Pyramide wird ein Resampling im Verhältnis
+%2:1 mit Hilfe von Algorithmen wie Nearest Neighbour (Nächster Nachbar), Bilinear
+%(Bilineare Interpolation) und Cubic (Kubische Faltung) durchgeführt. Bei unterschiedli-
+%chen Auflösungen und Zoom-Stufen können Pyramiden die Anzeige von Raster-Daten
+%beschleunigen, da nur die notwendige Schicht zum Anzeigen abgerufen werden kann.
+%Verwendet man keine Raster-Pyramiden, so müsste das gesamte Dataset direkt von
+%der Festplatte geladen und auf die entsprechend notwendige Auflösung neu berechnet
+%werden (Anzeige-Resampling). Pro Datensatz werden Raster-Pyramiden nur einmalig
+%erstellt und in einer separaten Datei gespeichert, welche sich im Allgemeinen neben
+%dem Quell-Raster befindet.
+
+
+\subsection{Vektordaten}
+Vektordaten basieren auf mathematischen Funktionen und sind somit insbesondere für trigonometrische Formen und lineare Merkmale im Koordinatensystem geeignet. Sie können verlustfrei und beliebig im Raum skaliert werden.
+
+\subsubsection{Shapefile}
+Shapefile ist ein Format bestehend aus mindestens drei Dateien (.shp, .shx, .dbf), weitere Dateien können optional hinzugefügt werden. Shapefiles sind das, am häufigsten verwendetste Vektorformat, es wird von allen Frameworks und Anwendungen unterstützt. Programme wie ArcMap und QGIS nutzen es standardmäßig beim exportieren von Vektorebenen.
+
+\subsubsection{geoJSON}
+
+
+
 
 \section{Stand der Wissenschaft}
 
@@ -363,7 +432,7 @@
 
 
 
-%\bibliographystyle{IEEEtran}
-%\bibliography{bibtemplate}
+\bibliographystyle{IEEEtran}
+\bibliography{bibtemplate}
 
 \end{document}
