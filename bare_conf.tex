@@ -349,7 +349,8 @@
 
 
 \section{Einleitung}
-Die Savanne in Afrika gehört zu den, am stärksten bedrohten Ökosystemen unserer Erde. \textbf{QUELLE} hat gezeigt, dass Multiagentensysteme einen wesentlichen Beitrag zur Erforschung dieses Lebensraumes leisten kann.\\
+Die Savanne in Afrika gehört zu den, am stärksten bedrohten Ökosystemen unserer Erde, dies belegt u.a. der Bericht der \enquote{Intergovernmental Panel on Climate Change} \cite{climateReport}.
+\cite{LUDAS} hat gezeigt, dass Multiagentensysteme einen wesentlichen Beitrag zur Erforschung dieses Lebensraumes leisten kann.\\
 
 
 
@@ -366,67 +367,71 @@ Dieser Ansatz hat sich in der Praxis als unflexibel und langsam herausgestellt. 
 	
 
 
-\section{Grundlagen}
+\section{Stand der Wissenschaft}
 
 
 \subsection{Tabellendaten}
-Tabellendaten in GIS sind im allgemeinen händisch oder automatisch erstellte Tabellen mit Messdaten unterschiedlichster Art.
-als Spezialfall sind Zeitreihendaten zu nennen. Hierbei handelt es Sich um Daten mit einem zeitlichem Ablauf, wie z.B. die Entwicklung von Temperatur über einen bestimmten Zeitraum.
-Die Speicherung solcher Daten sind relationale Datenbanken am besten geeignet. 
-
-
-\subsection{Rasterdaten}
-
-%GeoTIFF
-%GeoTIFF (.geotiff) ist ein Dateiformat zur Speicherung von georeferenzierten Bilddatei-
-%en. Im Gegensatz zum TIFF-Format speichert GeoTIFF zusätzlich zu den Rasterdaten
-%Koordinaten des Bildausschnitts und die verwendete Kartenprojektion. Das TIFF-
-%Format ist ein verlustfreier Datenspeicher, wodurch es sich gut zur Verarbeitung von
-%geografischen Daten eignet. Insbesondere hochauflösende Satelliten- und Luftbilder
-%werden in diesem Format gespeichert.
-
-\subsubsection{Mercator Pyramide}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\columnwidth]{img/mercator_pyramid.png}\\
-	\caption[]{Mercator Kachel Pyramide}
-	\label{img:mercator_pyramid}
-\end{figure}
-
-
-%Zur Verbesserung der Performance, insbesondere beim initialen Laden von großen
-%Rastern und Vergrößern/Verkleinern der Daten, können Raster-Pyramiden verwendet
-%werden. Raster-Pyramiden bestehen aus reduzierten Versionen des ursprünglichen
-%Raster-Datasets. Für jede Ebene in der Pyramide wird ein Resampling im Verhältnis
-%2:1 mit Hilfe von Algorithmen wie Nearest Neighbour (Nächster Nachbar), Bilinear
-%(Bilineare Interpolation) und Cubic (Kubische Faltung) durchgeführt. Bei unterschiedli-
-%chen Auflösungen und Zoom-Stufen können Pyramiden die Anzeige von Raster-Daten
-%beschleunigen, da nur die notwendige Schicht zum Anzeigen abgerufen werden kann.
-%Verwendet man keine Raster-Pyramiden, so müsste das gesamte Dataset direkt von
-%der Festplatte geladen und auf die entsprechend notwendige Auflösung neu berechnet
-%werden (Anzeige-Resampling). Pro Datensatz werden Raster-Pyramiden nur einmalig
-%erstellt und in einer separaten Datei gespeichert, welche sich im Allgemeinen neben
-%dem Quell-Raster befindet.
+Tabellendaten in GIS sind im allgemeinen händisch oder automatisch erstellte Tabellen mit Messdaten unterschiedlichster Art. \\
+Als Spezialfall sind Zeitreihendaten zu nennen. Hierbei handelt es Sich um Daten mit einem zeitlichem Ablauf, wie beispielsweise die Entwicklung von Temperatur über einen bestimmten Zeitraum.
+Die Speicherung solcher Daten sind relationale Datenbanken am besten geeignet. Der MARS Import speichert Zeitreihendaten einer InfluxDB\footnote{\url{https://influxdata.com/}}, welche speziell für diesen Zweck konzipiert wurde.
 
 
 \subsection{Vektordaten}
 Vektordaten basieren auf mathematischen Funktionen und sind somit insbesondere für trigonometrische Formen und lineare Merkmale im Koordinatensystem geeignet. Sie können verlustfrei und beliebig im Raum skaliert werden.
 
 \subsubsection{Shapefile}
-Shapefile ist ein Format bestehend aus mindestens drei Dateien (.shp, .shx, .dbf), weitere Dateien können optional hinzugefügt werden. Shapefiles sind das, am häufigsten verwendetste Vektorformat, es wird von allen Frameworks und Anwendungen unterstützt. Programme wie ArcMap und QGIS nutzen es standardmäßig beim exportieren von Vektorebenen.
+Shapefiles, entwickelt von der Firma Esri, ist ein Format bestehend aus mindestens drei Dateien (.shp, .shx, .dbf), weitere Dateien können optional hinzugefügt werden. Shapefiles sind das, am häufigsten verwendetste Vektorformat, es wird von allen gängigen GIS Anwendungen unterstützt. Programme wie ArcMap und QGIS nutzen es standardmäßig beim exportieren von Vektorebenen.
 
-\subsubsection{geoJSON}
+\subsubsection{GeoJSON}
+GeoJSON\footnote{\url{http://geojson.org/}} ist ein offenes Format zur Speicherung von Geodaten. Entwickelt wird es von der \enquote{IETF Geographic JSON Working Group}. \\
+GeoJSON hat gegenüber Shapefiles den Vorteil, dass es einen minimalen Overhead besitzt und Menschen lesbar ist. GeoJSON lässt sich in jeder Sprache parsen, was insbesondere die Handhabung im Web vereinfacht.
 
 
+\subsection{Rasterdaten}
+Rasterdaten werden aus einer Matrix von quadratischen Zellen gleicher Größe gebildet. Jede Zelle erhält einen Farbwert und abhängig vom Format einen Alphawert für die Transparenz. \\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\columnwidth]{img/rasterdaten}\\
+	\caption[]{Rasterdaten. Quelle ArcGis Dokumentation\footnotemark}
+	\label{img:rasterdaten}
+\end{figure}
+\footnotetext{\footnote{\url{http://help.arcgis.com/de/arcgisdesktop/10.0/help/index.html#/na/009t00000002000000/}}}
+
+\subsubsection{GeoTIFF}
+TIFF(.tiff) ist ein Bildformat, welches Rasterdaten verlustfrei speichert. GeoTIFF erweitert dieses Format um Metadaten, wie der Projektion und den Geo-Koordinaten des Bildausschnittes. Diese Eigenschaften machen das Format attraktiv für die Speicherung großer Gebietskarten. Diese könne in Abhängigkeit zum erfassten Gebiet und dessen Auflösung mehrere Gigabyte umfassen. \\
+Für die Darstellung von großen Rasterdaten, insbesondere in einer Client \& Server Architektur sind GeoTIFF Dateien daher ungeeignet und werden zu diesem Zweck in eine Mercator Pyramide umgewandelt.
+
+\subsubsection{Mercator Pyramide}
+Raster Pyramiden bestehen aus gleichgroßen Teilabschnitten einer größeren Rasterdatei in der Mercator Projektion, bei der jede Ebene eine Detailstufe (Zoomstufe) bildet. \\
+Die Mercator Projektion ist die Abbildung der Erdoberfläche auf eine quadratische Fläche. Für jede Detailstufe werden quadratische Kacheln gleicher Größe generiert. \\
+Beginnend mit einer Kachel auf Detailstufe 0 vervierfachen sich die Anzahl der Kacheln auf jeder Ebene, bis zur gewünschten Tiefe. Üblich sind Kachelgrößen von 256x256 Pixel, 19 Stufen und das Dateiformat .png. \\
+Dieses Verfahren erlaubt es, dem Benutzer einer Webanwendung beliebig große Dateien ohne sichtbaren Qualitätsverlust zu präsentieren.\\
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\columnwidth]{img/mercator_pyramid.png}\\
+	\caption[]{Mercator Kachel Pyramide}
+	\label{img:mercator_pyramid}
+\end{figure}
 
 
-\section{Stand der Wissenschaft}
 
 \section{Hauptteil}
+
+
+
 \subsection{Grundprojekt}
+
+
 \subsection{Masterprojekt}
+
+
 \subsection{Masterarbeit}
+
+
+
+\section{?Risiken?}
+
+
 
 \section{Zusammenfassung und Ausblick}
 
