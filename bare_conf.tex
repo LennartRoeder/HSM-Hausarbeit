@@ -424,8 +424,13 @@ Rasterdaten werden aus einer Matrix von quadratischen Zellen gleicher Größe ge
 TIFF(.tiff) ist ein Bildformat, welches Rasterdaten verlustfrei speichert. GeoTIFF erweitert dieses Format um Metadaten, wie der Projektion und den Geo-Koordinaten des Bildausschnittes. Diese Eigenschaften machen das Format attraktiv für die Speicherung großer Gebietskarten. Diese könne in Abhängigkeit zum erfassten Gebiet und dessen Auflösung mehrere Gigabyte umfassen. \\
 Für die Darstellung von großen Rasterdaten, insbesondere in einer Client \& Server Architektur sind GeoTIFF Dateien daher ungeeignet und werden zu diesem Zweck in eine Mercator Pyramide umgewandelt.\\
 
-\subsubsection{Mercator Pyramide}
-Raster Pyramiden bestehen aus gleichgroßen Teilabschnitten einer größeren Rasterdatei in der Mercator Projektion, bei der jede Ebene eine Detailstufe (Zoomstufe) bildet. \\
+
+\subsection{Quadtree}
+Quadtrees\cite{QuadTrees} sind ein Referenzierungsmodell, zur Aufteilung von zweidimensionalen Flächen. Jede Fläche wird in genau vier Unterbereiche (Kindknoten) unterteilt. Dies geschieht rekursiv bis zur gewünschten Tiefe.\\
+
+
+\subsection{Mercator Pyramide}
+Raster Pyramiden bestehen aus gleichgroßen Teilabschnitten einer größeren Rasterdatei in der Mercator Projektion, bei der jede Ebene eine Detailstufe (Zoomstufe) bildet. Sie sind eine Implementation der Quadtrees \\
 Die Mercator Projektion ist die Abbildung der Erdoberfläche auf eine quadratische Fläche. Für jede Detailstufe werden quadratische Kacheln gleicher Größe generiert. \\
 Beginnend mit einer Kachel auf Detailstufe 0 vervierfachen sich die Anzahl der Kacheln auf jeder Ebene, bis zur gewünschten Tiefe. Die Verzweigung entspricht einem Quad-Tree, also einem Baum mit jeweils vier Kindelementen. Üblich sind Kachelgrößen von 256x256 Pixel, 19 Stufen und das Dateiformat .png. \\
 Dieses Verfahren erlaubt es, dem Benutzer einer Webanwendung beliebig große Dateien ohne sichtbaren Qualitätsverlust zu präsentieren.\\
@@ -435,6 +440,20 @@ Dieses Verfahren erlaubt es, dem Benutzer einer Webanwendung beliebig große Dat
 	\caption[]{Mercator Kachel Pyramide}
 	\label{img:mercator_pyramid}
 \end{figure}
+
+
+\subsection{Quadkeys}
+Die Bing Quadkeys benennen die Flächen einer Mercator Pyramide mit einem Wert. Gewöhnlich werden Mercator Pyramiden mit Z/X/Y bezeichnet, wobei Z die Detailstufe, X die X-Achse und Y die Y-Achse ausmacht.\\
+Quadkeys codieren die Position der Fläche, indem für jede Detailstufe eine Ziffer zwischen 0 und 3 hinzugefügt wird. Siehe hierfür Abb. \ref{img:bing_quads}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\columnwidth]{img/bing_quads.png}\\
+	\caption[]{Bing Quadkeys\footnotemark}
+	\label{img:bing_quads}
+\end{figure}
+\footnotetext{\footnote{\url{https://msdn.microsoft.com/en-us/library/bb259689.aspx}}}
+
 
 
 \section{Grundprojekt}
@@ -478,13 +497,17 @@ GeoNode speichert die importierten Daten nicht direkt in eine Datenbank, sondern
 
 
 \section{Hauptprojekt}
-Umsetzung der spatialen Eingrenzungen
-evtl. Quad Algorithmus in die Websuite einbauen
-evtl. Neuentwicklung der Import Komponente
+Ziel des Hauptprojektes ist es, die spatiale Eingrenzung für alle Geodaten zu ermöglichen und die reduzierten Datensätze zu persistieren.\\
+Des weiteren wird der Quad Algorithmus von Busch\cite{JanBusch} in die Websuite eingebaut.\\
+Außerdem soll der GIS-Import für den GeoServer entwickelt werden.\\
 
 
 \subsection{Quad Algorithmus}
+Der Quad Algorithmus ist ein 
+
+
 \lstset{language=[Sharp]C, frame=single}
+\label{lst:quad1}
 \begin{lstlisting}
 QuadTileSearch(geometry) { 
   Set minimalZoomLevel to 1 
@@ -505,6 +528,40 @@ QuadTileSearch(geometry) {
 	
   return result; 
 }	
+\end{lstlisting}
+
+\label{lst:quad2}
+\begin{lstlisting}
+InspectQuadTile(quadTile, geometry){ 
+  Set result to empty list of string 
+  
+  switch DetermineVisibility(
+    quadTile, geometry){ 
+    //Geoobject fully outside current 
+      QuadTile => return 
+    case OUTSIDE: 
+      break; 
+      //QuadTile fully inside current 
+        geoobject => add current quadTile 
+    case WITHIN: 
+      result.Add(quadTile); 
+      break; 
+      //Geoobject smaller than this 
+        QuadTile or is only partially 
+        covered => examine children 
+    case INTERSECTS: 
+      if quadTile.ZoomLevel >= MAX_ZOOM 
+        break; 
+      //Parallelized execution 
+      for i=0 to quadTile.Children.Length{ 
+      childQuadTile = quadTile.Children[i] 
+      result += InspectQuadTile(
+        childQuadTile, geometry); 
+    } 
+    break; 
+  } 
+  return result; 
+}
 \end{lstlisting}
 
 
