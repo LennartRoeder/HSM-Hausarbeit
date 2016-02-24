@@ -68,6 +68,7 @@
 \usepackage[ngerman]{babel}
 \usepackage[babel,german=quotes]{csquotes} % Für gute Anführungszeichen
 \usepackage{float}
+\usepackage{listings}
 
 \usepackage{caption}
 \captionsetup{font=footnotesize,justification=centering,labelsep=period}
@@ -350,21 +351,43 @@
 
 \section{Einleitung}
 Die Savanne in Afrika gehört zu den, am stärksten bedrohten Ökosystemen unserer Erde, dies belegt u.a. der Bericht der \enquote{Intergovernmental Panel on Climate Change} \cite{climateReport}.
-\cite{LUDAS} hat gezeigt, dass Multiagentensysteme einen wesentlichen Beitrag zur Erforschung dieses Lebensraumes leisten kann.\\
+\cite{LUDAS} hat gezeigt, dass Multiagentensysteme einen wesentlichen Beitrag zur Erforschung dieses Lebensraumes leisten kann. \\
 
 
 
 \section{Die MARS Arbeitsgruppe}
-Die MARS (Multi-Agent Research \& Simulation) Arbeitsgruppe um Prof. Dr. Thiel-Clemen befasst sich daher mit der Erforschung und Entwicklung derartiger Simulationen. \\
+Die MARS (Multi-Agent Research \& Simulation) Arbeitsgruppe um Prof. Dr. Thiel-Clemen befasst sich mit der Erforschung und Entwicklung von Simulationen der afrikanischen Savanne unter Zuhilfenahme von Multi-Agenten Systemen (MAS). \\
 Das MARS Framework besteht aus verschiedenen Komponenten, von denen für diese Arbeit nur die Websuite von Bedeutung ist. Sie ist der eigentlichen Simulation in MARS LIFE vorangestellt und ist für Import, Datenaufbereitung und dem Zusammenfügen von Simulationsmodell und Daten zuständig. \\
-\indent Die einzelnen Komponenten wurden in der Grundseminar Ausarbeitung näher vorgestellt. Einzig der Import ist an dieser Stelle erwähnt, da sich hierbei erhebliche Änderungen ergeben haben.
+Für diese Arbeit ist lediglich die Websuite von Bedeutung. Sie besteht aus den folgenden Komponenten. \\
+
+
+\subsection{MARS ROCK}
+ROCK basiert auf dem Konzept eines Datawarehouses zur Speicherung von relationalen Daten und wird in der Masterarbeit von Busch\cite{JanBusch} beschrieben. \\
+Dieser Ansatz hat sich in der Praxis als unflexibel und langsam herausgestellt. Aus diesem Grund wird ROCK durch MariaDB und InfluxDB ersetzt. \\
+MariaDB bildet tabellarische Daten in einer Tabelle ab. InfluxDB ist eine Datenbank, die für Zeitreihendaten konzipiert wurde. Zeitreihendaten werden hier entsprechen abgelegt.\\
 
 
 \subsection{MARS Import}
-Der Import soll MARS PHOBOS als Importkomponente ersetzen und befindet sich derzeit in der Entstehung. \\
-PHOBOS basiert auf dem Konzept eines Datawarehouses zur Speicherung von relationalen Daten, wie in der Masterarbeit von Busch\cite{JanBusch}. \\
-Dieser Ansatz hat sich in der Praxis als unflexibel und langsam herausgestellt. Aus diesem Grund besteht der neue Ansatz aus einzelnen Teilprozessen. Diese sind ein Tabellenimport, der tabellarische Daten in einer Tabelle abbildet und einem Zeitreihenimport, der entsprechende 
-	
+MARS Import soll PHOBOS als Importkomponente für GROUND bzw. ROCK ersetzen und befindet sich derzeit in der Entwicklung. \\
+Der Import besteht aus je einer Ausprägung für die Art, der zu importierenden Daten. Diese sind Tabellenimport, Zeitreihenimport und GIS Import. \\
+Zu Beginn des Imports werden die Metadaten in einen entsprechenden Service geschrieben und der Dateiupload wird begonnen. Wenn der Upload abgeschlossen ist wird dies im Metadaten Service entsprechent vermerkt.\\
+
+
+\subsection{MARS GROUND}
+GROUND nutzt den Geoserver\footnote{\url{http://geoserver.org/}} zur Speicherung von Daten im Geoinformationssystem (GIS). Es implementiert den Web Map Service (WMS) Standard, der den Zugriff auf das Kartenmaterial über HTTP ermöglicht. Neben der Übertragung verfügt der Geoserver über eine API, die im begrenzten Rahmen Konvertierungsarbeiten übernehmen kann.\\
+
+
+\subsection{MARS DEIMOS}
+\label{sub:deimos}
+DEIMOS arbeitet auf Basis der Daten, die durch PHOBOS importiert werden. Daher ist es wichtig, dass Anforderungen an die Visualisierung beim Import berücksichtigt werden. Dies erfordert eine enge Zusammenarbeit zwischen DEIMOS und PHOBOS.\\
+Die Aufgabe von DEIMOS ist es, eine Webanwendung bereit zu stellen, die es dem Endnutzer und Simulationsentwickler erlaubt die Datenbestände in GROUND und ROCK zu sichten.\\
+Hierbei liegt der Fokus auf der Visualisierung unterschiedlicher Datentypen und der Möglichkeit alle importierten Daten tabellarisch einzusehen.\\
+Dem Benutzer soll es möglich sein, Daten für eine Simulation auszuwählen. Diese werden in einer JSON Datei benannt und die Datei wird an SHUTTLE übergeben.\\
+
+
+\subsection{MARS SHUTTLE}
+SHUTTLE ließt die Projektzusammenstellung von DEIMOS aus und stellt eine DSL bereit. Diese ermöglicht es, dem Benutzer das Simulationsmodell mit den Daten zu verbinden. Aus diesem Prozess entsteht die \enquote{Scenario Configuration}, welche in der Simulation verwendet wird.\\
+
 
 
 \section{Stand der Wissenschaft}
@@ -373,18 +396,18 @@ Dieser Ansatz hat sich in der Praxis als unflexibel und langsam herausgestellt. 
 \subsection{Tabellendaten}
 Tabellendaten in GIS sind im allgemeinen händisch oder automatisch erstellte Tabellen mit Messdaten unterschiedlichster Art. \\
 Als Spezialfall sind Zeitreihendaten zu nennen. Hierbei handelt es Sich um Daten mit einem zeitlichem Ablauf, wie beispielsweise die Entwicklung von Temperatur über einen bestimmten Zeitraum.
-Die Speicherung solcher Daten sind relationale Datenbanken am besten geeignet. Der MARS Import speichert Zeitreihendaten einer InfluxDB\footnote{\url{https://influxdata.com/}}, welche speziell für diesen Zweck konzipiert wurde.
+Die Speicherung solcher Daten sind relationale Datenbanken am besten geeignet. Der MARS Import speichert Zeitreihendaten einer InfluxDB\footnote{\url{https://influxdata.com/}}, welche speziell für diesen Zweck konzipiert wurde.\\
 
 
 \subsection{Vektordaten}
-Vektordaten basieren auf mathematischen Funktionen und sind somit insbesondere für trigonometrische Formen und lineare Merkmale im Koordinatensystem geeignet. Sie können verlustfrei und beliebig im Raum skaliert werden.
+Vektordaten basieren auf mathematischen Funktionen und sind somit insbesondere für trigonometrische Formen und lineare Merkmale im Koordinatensystem geeignet. Sie können verlustfrei und beliebig im Raum skaliert werden.\\
 
 \subsubsection{Shapefile}
-Shapefiles, entwickelt von der Firma Esri, ist ein Format bestehend aus mindestens drei Dateien (.shp, .shx, .dbf), weitere Dateien können optional hinzugefügt werden. Shapefiles sind das, am häufigsten verwendetste Vektorformat, es wird von allen gängigen GIS Anwendungen unterstützt. Programme wie ArcMap und QGIS nutzen es standardmäßig beim exportieren von Vektorebenen.
+Shapefiles, entwickelt von der Firma Esri, ist ein Format bestehend aus mindestens drei Dateien (.shp, .shx, .dbf), weitere Dateien können optional hinzugefügt werden. Shapefiles sind das, am häufigsten verwendetste Vektorformat, es wird von allen gängigen GIS Anwendungen unterstützt. Programme wie ArcMap und QGIS nutzen es standardmäßig beim exportieren von Vektorebenen.\\
 
 \subsubsection{GeoJSON}
 GeoJSON\footnote{\url{http://geojson.org/}} ist ein offenes Format zur Speicherung von Geodaten. Entwickelt wird es von der \enquote{IETF Geographic JSON Working Group}. \\
-GeoJSON hat gegenüber Shapefiles den Vorteil, dass es einen minimalen Overhead besitzt und Menschen lesbar ist. GeoJSON lässt sich in jeder Sprache parsen, was insbesondere die Handhabung im Web vereinfacht.
+GeoJSON hat gegenüber Shapefiles den Vorteil, dass es einen minimalen Overhead besitzt und Menschen lesbar ist. GeoJSON lässt sich in jeder Sprache parsen, was insbesondere die Handhabung im Web vereinfacht.\\
 
 
 \subsection{Rasterdaten}
@@ -399,12 +422,12 @@ Rasterdaten werden aus einer Matrix von quadratischen Zellen gleicher Größe ge
 
 \subsubsection{GeoTIFF}
 TIFF(.tiff) ist ein Bildformat, welches Rasterdaten verlustfrei speichert. GeoTIFF erweitert dieses Format um Metadaten, wie der Projektion und den Geo-Koordinaten des Bildausschnittes. Diese Eigenschaften machen das Format attraktiv für die Speicherung großer Gebietskarten. Diese könne in Abhängigkeit zum erfassten Gebiet und dessen Auflösung mehrere Gigabyte umfassen. \\
-Für die Darstellung von großen Rasterdaten, insbesondere in einer Client \& Server Architektur sind GeoTIFF Dateien daher ungeeignet und werden zu diesem Zweck in eine Mercator Pyramide umgewandelt.
+Für die Darstellung von großen Rasterdaten, insbesondere in einer Client \& Server Architektur sind GeoTIFF Dateien daher ungeeignet und werden zu diesem Zweck in eine Mercator Pyramide umgewandelt.\\
 
 \subsubsection{Mercator Pyramide}
 Raster Pyramiden bestehen aus gleichgroßen Teilabschnitten einer größeren Rasterdatei in der Mercator Projektion, bei der jede Ebene eine Detailstufe (Zoomstufe) bildet. \\
 Die Mercator Projektion ist die Abbildung der Erdoberfläche auf eine quadratische Fläche. Für jede Detailstufe werden quadratische Kacheln gleicher Größe generiert. \\
-Beginnend mit einer Kachel auf Detailstufe 0 vervierfachen sich die Anzahl der Kacheln auf jeder Ebene, bis zur gewünschten Tiefe. Üblich sind Kachelgrößen von 256x256 Pixel, 19 Stufen und das Dateiformat .png. \\
+Beginnend mit einer Kachel auf Detailstufe 0 vervierfachen sich die Anzahl der Kacheln auf jeder Ebene, bis zur gewünschten Tiefe. Die Verzweigung entspricht einem Quad-Tree, also einem Baum mit jeweils vier Kindelementen. Üblich sind Kachelgrößen von 256x256 Pixel, 19 Stufen und das Dateiformat .png. \\
 Dieses Verfahren erlaubt es, dem Benutzer einer Webanwendung beliebig große Dateien ohne sichtbaren Qualitätsverlust zu präsentieren.\\
 \begin{figure}[H]
 	\centering
@@ -414,18 +437,79 @@ Dieses Verfahren erlaubt es, dem Benutzer einer Webanwendung beliebig große Dat
 \end{figure}
 
 
-
-\section{Hauptteil}
-
-
-
-\subsection{Grundprojekt}
-
-
-\subsection{Masterprojekt}
+\section{Grundprojekt}
+Der Begriff Geoinformationssystem(GIS) umfasst die Speicherung, Manipulation, Organisation und Darstellung von räumliche Daten. Diese Daten werden im MARS Framework als Basis für Agentensimulationen genutzt.\\
+MARS DEIMOS stellt diese Daten dar und ermöglicht es dem Benutzer Daten für Simulationen auszuwählen. Um eine bessere Benutzbarkeit zu erreichen sollen die Daten auf Korrektheit geprüft werden.\\
+Eine unmittelbare Korrektur der erkannten Fehler soll nur in geringem Maße durchgeführt werden. Grund hierfür ist die Existenz von bekannten und etablierten GIS-Werkzeugen wie ArcGIS, QGIS und GRASS, die für derartige Aufgaben konzipiert wurden.\\
+Voraussetzung für ein zukunftssicheres Design sind, stabile und dokumentierte Softwarelösungen für die Analyse und Manipulation, sowie eine dauerhafte Speicherung der GEO-Daten.\\
+Ziel des Grundprojektes war es, die aktuelle Situation zu dokumentieren und Verbesserungsvorschläge zu erarbeiten.\\
 
 
-\subsection{Masterarbeit}
+\subsection{Technologievergleich}
+Für die Verarbeitung von Geodaten gibt es zahlreiche Bibliotheken mit unterschiedlichen Einsatzgebieten. Folgende kommen für die Analyse und Manipulation von GIS-Daten in Betracht.\\
+
+\subsubsection{Geospatial Data Abstraction Library (GDAL) [C/C++]}
+GDAL ist eine, in C/C++ geschriebene Geo-Bibliothek für Raster und Vektordaten. Es wird in vielen Werkzeugen als Grundlage verwendet. Werkzeuge, die GDAL verwenden sind u.a. ArcGIS, QGIS, GRASS, Google Earth, die Programmiersprache \enquote{R}, sowie die im folgenden genannten Werkzeuge mit Außnahme GeoTools und dem GeoServer.\\
+GDAL über den Aufruf der Konsolenanwendung direkt zu nutzen ist möglich, jedoch nicht zu empfehlen. Insbesondere die Auswertung von Rückgabewerten ist mit der unmittelbaren Verwendung umständlich, da die Konsolenausgaben interpretiert werden müssen.\\
+Abhilfe können eine Vielzahl von GDAL Wrapper Bibliotheken schaffen. Diese ermöglichen eine bessere Handhabung.\\
+
+\subsubsection{SharpMap [C\#]}
+SharpMap ist ein Geospatiale Bibliothek für C\#, welche bereits in MARS LIVE verwendet wird. SharpMap unterstützt verschiedene Vektorformate, darunter Shapefiles. Die Unterstützung von Rasterdaten geschieht durch GDAL. Für die Darstellung von Kartendaten kann der Web Map Service (WMS) der The Open Source Geospatial Foundation (OSGeo) verwendet werden.\\
+Die Dokumentation von SharpMap beschränkt sich auf 5 kurze Anwendungsbeispiele, eine komplette Klassendokumentation ist nicht vorhanden.\\
+	
+\subsubsection{DotSpatial [C\#]}
+DotSpatial ist neben SharpMap eine weitere Möglichkeit Geospatiale Operation auf Geodaten in C\# durchzuführen. Im Vergleich zu SharpMap stehen dem Entwickler neben Tutorials und Code Ausschnitten auch ein Getting started Guide und eine SDK Dokumentation einiger Komponenten zur Verfügung.\\
+	
+\subsubsection{GeoTools [Java]}
+GeoTools unterscheidet sich von den bereits genannten Werkzeugen insofern, als dass es in Java geschrieben wurde, welches bis jetzt nicht Teil der Websuite ist. Java als Sprache wird in der MARS Arbeitsgruppe bis jetzt nur im ConfigService eingesetzt. Durch den Einsatz von Docker ist dies allerdings nicht als Problem anzusehen, da eine heterogen gestaltete Softwarearchitektur dem Microservices Ansatz entspricht.\\
+Die Bibliothek basiert als einzige der genannten Lösungen nicht auf GDAL als Basis. GeoTools ist Teil der Open Source Geospatial Foundation (OSGeo).\\
+Es verfügt neben einem Quickstart Guide und einer API Dokumentation, über einen User Guide und zahlreiche Programmbeispiele. Die Dokumentationen sind ausgesprochen ausführlich und sehr aktuell. Das Projekt ist aktueller als jedes der anderen genannten Bibliotheken.\\
+
+\subsubsection{GeoServer}
+\label{subsubsubsec:GeoServer}
+Der GeoServer ist eine Verwaltungssoftware für Geodaten, basierend auf Java und PostGIS. Unterstützt werden eine Vielzahl von Raster-/ und Vektorformaten. Der GeoServer erlaubt neben der Verwaltung auch die Bearbeitung von Geodaten, sowie eine Darstellung mit Hilfe von OpenLayers. All diese Funktionalitäten lassen sich über eine Weboberfläche bedienen.\\
+Mittels einer ausführlichen REST Schnittstelle lassen sich die Geoserver Abfragen in andere Anwendungen integrieren.\\
+
+\subsubsection{GeoNode [Python]}
+GeoNode ist keine Bibliothek, es handelt sich hierbei um ein Content Management System (CMS) für Geodaten, basierend auf dem Python Webframework Django.\\
+Nach der Installation bietet GeoNode eine ansprechende Benutzeroberfläche, über die sich Raster-/ und Vektordaten importieren lassen. Auf Basis dieser Layer lassen sich Karten zusammenstellen.\\
+GeoNode speichert die importierten Daten nicht direkt in eine Datenbank, sondern nutzt eine Instanz des GeoServers (siehe Abs. \ref{subsubsubsec:GeoServer}). Obwohl der GeoServer ein Vielzahl von Formaten unterstützt erlaubt GeoNode derzeit (v2.3), nur den Import von Esri Shapefiles und GeoTIFF Dateien.\\
+
+
+
+\section{Hauptprojekt}
+Umsetzung der spatialen Eingrenzungen
+evtl. Quad Algorithmus in die Websuite einbauen
+evtl. Neuentwicklung der Import Komponente
+
+
+\subsection{Quad Algorithmus}
+\lstset{language=[Sharp]C, frame=single}
+\begin{lstlisting}
+QuadTileSearch(geometry) { 
+  Set minimalZoomLevel to 1 
+  Set startQuadTiles to null 
+
+  minimalZoomLevel = DetermineLevelForArea
+    (geometry.Area);
+  startQuadTiles = AllQuadTilesForZoom
+    (minimalZoomLevel);
+	
+  //Parallelized execution
+  Set result to empty List of String  
+
+  for i=0 to startQuadTiles.Length 
+    quadTile = startQuadTiles[i];
+    result += InspectQuadTile
+      (quadTile, geometry);
+	
+  return result; 
+}	
+\end{lstlisting}
+
+
+
+\section{Masterarbeit}
 
 
 
