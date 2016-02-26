@@ -69,6 +69,7 @@
 \usepackage[babel,german=quotes]{csquotes} % Für gute Anführungszeichen
 \usepackage{float}
 \usepackage{listings}
+\usepackage{tabu}
 
 \usepackage{caption}
 \captionsetup{font=footnotesize,justification=centering,labelsep=period}
@@ -373,8 +374,8 @@ Der Import besteht aus je einer Ausprägung für die Art, der zu importierenden 
 Zu Beginn des Imports werden die Metadaten in einen entsprechenden Service geschrieben und der Dateiupload wird begonnen. Wenn der Upload abgeschlossen ist wird dies im Metadaten Service entsprechent vermerkt.\\
 
 
-\subsection{MARS GROUND}
-GROUND nutzt den Geoserver\footnote{\url{http://geoserver.org/}} zur Speicherung von Daten im Geoinformationssystem (GIS). Es implementiert den Web Map Service (WMS) Standard, der den Zugriff auf das Kartenmaterial über HTTP ermöglicht. Neben der Übertragung verfügt der Geoserver über eine API, die im begrenzten Rahmen Konvertierungsarbeiten übernehmen kann.\\
+%\subsection{MARS GROUND}
+%GROUND nutzt den Geoserver\footnote{\url{http://geoserver.org/}} zur Speicherung von Daten im Geoinformationssystem (GIS). Es implementiert den Web Map Service (WMS) Standard, der den Zugriff auf das Kartenmaterial über HTTP ermöglicht. Neben der Übertragung verfügt der Geoserver über eine API, die im begrenzten Rahmen Konvertierungsarbeiten übernehmen kann.\\
 
 
 \subsection{MARS DEIMOS}
@@ -481,6 +482,7 @@ Die Dokumentation von SharpMap beschränkt sich auf 5 kurze Anwendungsbeispiele,
 DotSpatial ist neben SharpMap eine weitere Möglichkeit Geospatiale Operation auf Geodaten in C\# durchzuführen. Im Vergleich zu SharpMap stehen dem Entwickler neben Tutorials und Code Ausschnitten auch ein Getting started Guide und eine SDK Dokumentation einiger Komponenten zur Verfügung.\\
 	
 \subsubsection{GeoTools [Java]}
+\label{GeoTools}
 GeoTools unterscheidet sich von den bereits genannten Werkzeugen insofern, als dass es in Java geschrieben wurde, welches bis jetzt nicht Teil der Websuite ist. Java als Sprache wird in der MARS Arbeitsgruppe bis jetzt nur im ConfigService eingesetzt. Durch den Einsatz von Docker ist dies allerdings nicht als Problem anzusehen, da eine heterogen gestaltete Softwarearchitektur dem Microservices Ansatz entspricht.\\
 Die Bibliothek basiert als einzige der genannten Lösungen nicht auf GDAL als Basis. GeoTools ist Teil der Open Source Geospatial Foundation (OSGeo).\\
 Es verfügt neben einem Quickstart Guide und einer API Dokumentation, über einen User Guide und zahlreiche Programmbeispiele. Die Dokumentationen sind ausgesprochen ausführlich und sehr aktuell. Das Projekt ist aktueller als jedes der anderen genannten Bibliotheken.\\
@@ -497,7 +499,27 @@ GeoNode speichert die importierten Daten nicht direkt in eine Datenbank, sondern
 
 
 \subsection{Ergebnis}
-GeoServer
+Im Grundprojekt wurde eine Anforderungsanalyse durchgeführt. Auf Basis der ermittelten Anforderung wurde entschieden, dass der GeoServer zukünftig wieder für die Verwaltung von Geodaten verwendet werden soll. Des weiteren wird für die Berechnungen von Geooperationen ein Microservice erstellt, der alle nötigen Geooperation durchführt. \\
+
+\subsubsection{Datenspeicherung}
+In der Vergangenheit wurde hiervon Abstand genommen, Performance Messungen im Rahmen des Grundprojektes haben jedoch gezeigt, dass ein entsprechend optimierter Geoserver durchaus in der Lage ist große Mengen an Geodaten zu verwalten.\\
+Getestet wurde die Importgeschwindigkeit mit jeweils einer kleinen und einer großen Esri Ascii(.asc) Datei und einem Shapefile(.shp). Die Kleinen Dateien haben, komprimiert in einer .zip Datei eine ungefähre Größe von 400kB und die großen Dateien eine Größe von 500MB.\\
+Es ist zu beachten, dass die Importzeiten unter localhost durchgeführt wurden und Die Ergebnisse Mittelwerte sind.\\
+
+\begin{table}[H]
+	{\tabulinesep=2mm
+	\begin{center}\begin{tabu}{ |c|r|r| }
+		\hline
+		& \textbf{Shapefile} & \textbf{.asc Datei} \\ \hline
+		kleine Datei & 200 ms & 70 ms \\ \hline
+		große Datei & 8.800 ms & 3.500 ms \\ \hline
+	\end{tabu}\end{center}}
+	\caption{GeoServer Import Performance}
+\end{table}
+
+\subsubsection{Datenverarbeitung}
+Viele Arbeiten, wie die Konvertierung von Geodaten und die Generierung von Bilderpyramiden sind direkt über den GeoServer möglich.\\
+Für die weiterführende Verarbeitung und die inhaltliche Validitätsprüfung wird eine zentrale Komponente geschaffen, die lose an die Websuite gekoppelt ist. Diese Komponente besteht aus einer erweiterbaren Bibliothek auf Basis von GeoTools (siehe \ref{GeoTools}).\\
 
 
 
@@ -505,6 +527,9 @@ GeoServer
 Ziel des Hauptprojektes ist es, die spatiale Eingrenzung für alle Geodaten zu ermöglichen und die reduzierten Datensätze zu persistieren.\\
 Außerdem soll der GIS-Import für den GeoServer entwickelt werden.\\
 Des weiteren wird der Quad Algorithmus von Busch\cite{JanBusch} in die Websuite eingebaut.\\
+
+\subsection{Spatiale Eingrenzung}
+
 
 \subsection{Quad Algorithmus}
 Bei der Speicherung von Rasterdaten wird jeder Datensatz als einzelne Datei abgelegt und es wird für den schnellen Zugriff im Web eine Mercatur Pyramide (siehe \ref{MercatorPyramide}) generiert.\\
@@ -592,6 +617,48 @@ Bei Kacheln der dritten Klasse, wird für die 4 tiefer gelegenen Kacheln jeweils
 
 
 \section{Masterarbeit}
+
+\cite{climateReport} \cite{Sell06} \cite{ORX:8339705}
+Spatial gemischter Indikator
+
+\subsection{Voraussetzungen}
+- Daten sind in GIS Formaten vorhanden (z.B. *.shp, *.asc oder GeoJSON)
+- Layer müssen georeferenziert sein
+- übereinstimmender Geltungsbereich\\
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\columnwidth]{img/Spatialer_Indikator.png} \\
+	\caption[]{Spatialer Indikator. Quelle: }
+	\label{img:shape2quads}
+\end{figure}
+
+
+\subsection{Verarbeitung}
+- Gemeinsame Fläche aller Layer bestimmen
+- Fläche in gleichgroße Quadranten aufteilen
+- Wertnormalisierung mittels linearer Min-/ Max-Formel (z.B. 0-255)
+- evtl. Eingabedaten gewichten
+- SGI von jedem Quadranten bilden\\
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\columnwidth]{img/min_max_normalize.png} \\
+	\caption[]{Wertnormalisierung. Quelle: }
+	\label{img:shape2quads}
+\end{figure}
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\columnwidth]{img/climate_hotspots.png} \\
+	\caption[]{Klimahotspots. Quelle: }
+	\label{img:shape2quads}
+\end{figure}
 
 
 
