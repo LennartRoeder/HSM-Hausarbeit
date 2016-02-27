@@ -556,124 +556,75 @@ Tiles außerhalb des zu durchsuchenden Bereichs sind nicht teil der Ergebnismeng
 Liegt ein Geometrisches Objekt vollständig in einer Kachel, so ist eine Tiefensuche ebenfalls nicht nötig. Das Tile wird der Ergebnismenge hinzugefügt.\\
 Bei Kacheln der dritten Klasse, wird für die 4 tiefer gelegenen Kacheln jeweils in eigenen Threads rekursiv die gleiche Überprüfung durchgeführt.\\
 
-%\lstset{language=[Sharp]C, frame=single}
-%\label{lst:quad1}
-%\begin{lstlisting}
-%QuadTileSearch(geometry) { 
-%  Set minimalZoomLevel to 1 
-%  Set startQuadTiles to null 
-%
-%  minimalZoomLevel = DetermineLevelForArea
-%    (geometry.Area);
-%  startQuadTiles = AllQuadTilesForZoom
-%    (minimalZoomLevel);
-%	
-%  //Parallelized execution
-%  Set result to empty List of String  
-%
-%  for i=0 to startQuadTiles.Length 
-%    quadTile = startQuadTiles[i];
-%    result += InspectQuadTile
-%      (quadTile, geometry);
-%	
-%  return result; 
-%}	
-%\end{lstlisting}
-%
-%\label{lst:quad2}
-%\begin{lstlisting}
-%InspectQuadTile(quadTile, geometry){ 
-%  Set result to empty list of string 
-%  
-%  switch DetermineVisibility(
-%    quadTile, geometry){ 
-%    //Geoobject fully outside current 
-%      QuadTile => return 
-%    case OUTSIDE: 
-%      break; 
-%      //QuadTile fully inside current 
-%        geoobject => add current quadTile 
-%    case WITHIN: 
-%      result.Add(quadTile); 
-%      break; 
-%      //Geoobject smaller than this 
-%        QuadTile or is only partially 
-%        covered => examine children 
-%    case INTERSECTS: 
-%      if quadTile.ZoomLevel >= MAX_ZOOM 
-%        break; 
-%      //Parallelized execution 
-%      for i=0 to quadTile.Children.Length{ 
-%      childQuadTile = quadTile.Children[i] 
-%      result += InspectQuadTile(
-%        childQuadTile, geometry); 
-%    } 
-%    break; 
-%  } 
-%  return result; 
-%}
-%\end{lstlisting}
 
 
+\section{Masterarbeit - Spatialer Indikator}
+Ökosysteme sind sehr komplexe Gebilde mit einer Vielzahl von Einflussfaktoren. Diese Konstrukte zu Verstehen ist die Voraussetzung dafür, Folgeabschätzungen durchführen zu können und somit, den stetig voranschreitenden Klimawandel zu begrenzen.\\
+Spatiale Indikatoren können bei der räumlichen Analyse eingesetzt werden, um den klimatische Veränderungen besser zu verstehen (\cite{cline2014early} \cite{costa2014fragmentation} \cite{mattingly2014housing}).\\
+Die Arbeitsgruppe um Hagenlocher et al. \cite{hagenlocher2014modeling} befasst sich mit den Ländern Westafrikas, da diese zu den am stärksten betroffenen, durch den Klimawandel gehören \cite{hamro2014livelihood}. Um besonders bedrohte Gebiete, sog. Hotspots zu extrahieren und diese Bereiche mit anderen vergleichbar zu machen wurde der spatial gemischte Indikator (SGI) entwickelt. Dieser stellt eine Weiterentwicklung des SI dar und wird mit Hilfe von arithmetischen Berechnungen aus verschiedenen homogenisierten Subindikatoren berechnet.\\
 
-\section{Masterarbeit}
-Die Erforschung 
-
-\cite{cline2014early} \cite{costa2014fragmentation} \cite{mattingly2014housing}
-Spatial gemischter Indikator
-
-\subsection{Voraussetzungen}
-- Daten sind in GIS Formaten vorhanden (z.B. *.shp, *.asc oder GeoJSON)
-- Layer müssen georeferenziert sein
-- übereinstimmender Geltungsbereich\\
+Der SGI gibt einen räumlich abhängigen Wert an, der geographische Gebiete in Bezug auf eine bestimmte Kennzahl vergleichbar macht \cite{anselin1995local}. Zur Berechnung des SGI müssen die Datensätze zunächst wert-normalisiert und anschließend segmentiert(regionalisiert) und klassifiziert werden. Abb. \ref{img:Spatialer_Indikator} zeigt den allgemeinen Ablauf.\\
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{img/Spatialer_Indikator.png} \\
 	\caption[]{Spatialer Indikator. Quelle: \cite{mariuszMaster}}
-	\label{img:shape2quads}
+	\label{img:Spatialer_Indikator}
 \end{figure}
 
 
-\subsection{Verarbeitung}
-- Gemeinsame Fläche aller Layer bestimmen
-- Fläche in gleichgroße Quadranten aufteilen
-- Wertnormalisierung mittels linearer Min-/ Max-Formel (z.B. 0-255)
-- evtl. Eingabedaten gewichten
-- SGI von jedem Quadranten bilden\\
-
-\subsection{Durchführung}
-
-\subsubsection{Klassifizierung}
-
-\subsubsection{Segmentierung}
-
-\subsubsection{Verschneidung}
+\subsection{Voraussetzungen}
+Für die Errechnung des SGI gelten bestimmt Prämissen, denen die Daten genügen müssen.\\
+Der gemischte Indikator über ein Bereich wir aus verschiedenen Datensätzen errechnet. Eine korrekte Aussage kann nur getroffen werden, wenn die Daten den gleichen geographischen Bereich referenzieren.\\
+Die Auflösung der Datensätze ist häufig unterschiedlich. Beispielsweise können Temperaturdaten stündlich aufgenommen sein und Niederschlagsdaten täglich. Eine entsprechende Inter-/ bzw. extrapolieren ist zwingend erforderlich.\\
+Die einzelnen Daten müssen in GIS Formaten vorliegen. Hierbei handelt es sich um Formate, die neben den eigentlichen Daten Metadaten abspeichern können. Gängige Formate sind: *.shp, *.asc oder GeoJSON.
+Die Layer, auf denen sich die Informationen befinden müssen georeferenziert sein, es muss also in den erwähnten Metadaten hinterlegt sein, für welchen Bereich und ggf. Zeitraum die Daten gültig sind.\\
 
 
-
-
-
+\subsection{Vorbereitung}
+ Es muss mittels GIS-Operationen eine gemeinsame Schnittmenge aus den, zur Verfügung gestellten Daten gebildet werden.\\
+ Diese Fläche wird in verschiedene, gleichgroße Quadranten aufgeteilt um später eine gleich gewichtete Aussage zu erhalten. Die maximale Feingranularität der Quadranten hängt von der Auflösung der Daten ab, eine zu feine Unterteilung führt nicht zur Verbesserung des Ergebnis.\\
+ Die Werte, der einzelnen Eingabeparameter müssen Wert-normalisiert werden. Üblich ist die Bildung des SGI über Farbwerte eins Graustufenbildes. Eine Normalisierung von 0 bis 255 ist hier der Regelfall. Abbildung \ref{img:Wertnormalisierung} zeigt die Formel zur Normalisierung.\\
+ In Abhängig der Eingabewerte zueinander, ist es gegebenenfalls notwendig eine Gewichtung einfließen zu lassen. Diese ist Domain abhängig und kann nicht generell festgelegt werden.\\
+ Abschließend wird aus jedem Teilquadranten der SGI gebildet.\\
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{img/min_max_normalize.png} \\
-	\caption[]{Wertnormalisierung. Quelle: }
-	\label{img:shape2quads}
+	\caption[]{Wertnormalisierung. Quelle: \cite{hagenlocher2014modeling}}
+	\label{img:Wertnormalisierung}
 \end{figure}
 
+\subsection{Durchführung}
+Die Bildung des SGI, mit den vorbereiteten Daten geschieht in drei Schritten: Segmentierung, Klassifizierung und Verschneidung.
 
+\subsubsection{Segmentierung}
+Nach Stepinski et al. \cite{stepinski2006automatic} werden bei der Segmentierung kleine Teile eines Bildes auf Basis von homogenen Eigenschaften unterteilt. Für die Durchführung wird das Verfahren der objekt-basierte Bildanalyse (OBIA) \cite{hay2006object} eingesetzt. Hierbei werden anhand von Farbwerten einzelne Objekte aus einem Bild herausgearbeitet, welche für die Klassifizierung verwendet werden.
+
+
+\subsubsection{Klassifizierung}
+Bei der Klassifizierung werden Grundinformationen der einzelnen Bereiche entfernt, um die Unterschiede von Bereichen besser heraus arbeiten zu können und Muster zu erkennen. Anhand von domainspezifischen Regeln werden Informationen herausgearbeitet.\\
+Es kommen entsprechend des gewünschten Ergebnis andere Algorithmen zum Einsatz. Gängig sind die Klassifizierung durch Bestimmung der Häufigkeiten oder Durchschnittswerte der Farbwerte.
+
+
+\subsubsection{Verschneidung}
+Bei der Verschneidung wird aus den einzelnen Subindikatoren der Segmentierung und Klassifizierung, der SGI für einen Bereich errechnet. Hagenlocher et al. \cite{hagenlocher2014modeling} nutzt hierfür den Cumulative climate change impact (siehe Abb. \ref{img:CCI_Formel}).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\columnwidth]{img/CCI_Formel.png} \\
+	\caption[]{CCI Formel. Quelle: \cite{hagenlocher2014modeling}}
+	\label{img:CCI_Formel}
+\end{figure}
+
+Abb. \ref{img:Klimahotspots} zeigt ein mögliches Ergebnis.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{img/climate_hotspots.png} \\
 	\caption[]{Klimahotspots. Quelle: }
-	\label{img:shape2quads}
+	\label{img:Klimahotspots}
 \end{figure}
-
-
-
-\section{?Risiken?}
 
 
 
