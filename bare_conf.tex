@@ -352,26 +352,26 @@
 
 \section{Einleitung}
 Die Savanne in Afrika gehört zu den, am stärksten bedrohten Ökosystemen unserer Erde, dies belegt u.a. der Bericht der \enquote{Intergovernmental Panel on Climate Change} \cite{climateReport}.\\
-\cite{LUDAS} hat gezeigt, dass Multiagentensysteme einen wesentlichen Beitrag zur Erforschung dieses Lebensraumes leisten kann. \\
+\cite{LUDAS} hat gezeigt, dass Multiagentensysteme einen wesentlichen Beitrag zur Erforschung dieses Lebensraumes leisten kann.
 
 
 
 \section{Die MARS Arbeitsgruppe}
 Die MARS (Multi-Agent Research \& Simulation) Arbeitsgruppe um Prof. Dr. Thiel-Clemen befasst sich mit der Erforschung und Entwicklung von Simulationen der afrikanischen Savanne unter Zuhilfenahme von Multi-Agenten Systemen (MAS). \\
 Das MARS Framework besteht aus verschiedenen Komponenten, von denen für diese Arbeit nur die Websuite von Bedeutung ist. Sie ist der eigentlichen Simulation in MARS LIFE vorangestellt und ist für Import, Datenaufbereitung und dem Zusammenfügen von Simulationsmodell und Daten zuständig. \\
-Für diese Arbeit ist lediglich die Websuite von Bedeutung. Sie besteht aus den folgenden Komponenten. \\
+Für diese Arbeit ist lediglich die Websuite von Bedeutung. Sie besteht aus den folgenden Komponenten.
 
 
 \subsection{MARS ROCK}
 ROCK basiert auf dem Konzept eines Datawarehouses zur Speicherung von relationalen Daten und wird in der Masterarbeit von Busch\cite{JanBusch} beschrieben. \\
 Dieser Ansatz hat sich in der Praxis als unflexibel und langsam herausgestellt. Aus diesem Grund wird ROCK durch MariaDB und InfluxDB ersetzt. \\
-MariaDB bildet tabellarische Daten in einer Tabelle ab. InfluxDB ist eine Datenbank, die für Zeitreihendaten konzipiert wurde. Zeitreihendaten werden hier entsprechen abgelegt.\\
+MariaDB bildet tabellarische Daten in einer Tabelle ab. InfluxDB ist eine Datenbank, die für Zeitreihendaten konzipiert wurde. Zeitreihendaten werden hier entsprechen abgelegt.
 
 
 \subsection{MARS Import}
 MARS Import soll PHOBOS als Importkomponente für GROUND bzw. ROCK ersetzen und befindet sich derzeit in der Entwicklung. \\
 Der Import besteht aus je einer Ausprägung für die Art, der zu importierenden Daten. Diese sind Tabellenimport, Zeitreihenimport und GIS Import. \\
-Zu Beginn des Imports werden die Metadaten in einen entsprechenden Service geschrieben und der Dateiupload wird begonnen. Wenn der Upload abgeschlossen ist wird dies im Metadaten Service entsprechent vermerkt.\\
+Zu Beginn des Imports werden die Metadaten in einen entsprechenden Service geschrieben und der Dateiupload wird begonnen. Wenn der Upload abgeschlossen ist wird dies im Metadaten Service entsprechent vermerkt.
 
 
 %\subsection{MARS GROUND}
@@ -383,7 +383,7 @@ Zu Beginn des Imports werden die Metadaten in einen entsprechenden Service gesch
 DEIMOS arbeitet auf Basis der Daten, die durch PHOBOS importiert werden. Daher ist es wichtig, dass Anforderungen an die Visualisierung beim Import berücksichtigt werden. Dies erfordert eine enge Zusammenarbeit zwischen DEIMOS und PHOBOS.\\
 Die Aufgabe von DEIMOS ist es, eine Webanwendung bereit zu stellen, die es dem Endnutzer und Simulationsentwickler erlaubt die Datenbestände in GROUND und ROCK zu sichten.\\
 Hierbei liegt der Fokus auf der Visualisierung unterschiedlicher Datentypen und der Möglichkeit alle importierten Daten tabellarisch einzusehen.\\
-Dem Benutzer soll es möglich sein, Daten für eine Simulation auszuwählen. Diese werden in einer JSON Datei benannt und die Datei wird an SHUTTLE übergeben.\\
+Dem Benutzer soll es möglich sein, Daten für eine Simulation auszuwählen. Diese werden in einer JSON Datei benannt und die Datei wird an SHUTTLE übergeben.
 
 
 \subsection{MARS SHUTTLE}
@@ -392,24 +392,24 @@ SHUTTLE ließt die Projektzusammenstellung von DEIMOS aus und stellt eine DSL be
 
 
 \section{Stand der Wissenschaft}
-Für die Verarbeitung in Geoinformationssystemen (GIS) sind eine Vielzahl von Datentypen und Datenrepräsentationen notwendig. Die Folgenden Werkzeuge sind für diese Arbeit von zentraler Bedeutung.\\
+Für die Verarbeitung in Geoinformationssystemen (GIS) sind eine Vielzahl von Datentypen und Datenrepräsentationen notwendig. Die Folgenden Werkzeuge sind für diese Arbeit von zentraler Bedeutung.
 
 
 \subsection{Tabellendaten}
 Tabellendaten in GIS sind im allgemeinen händisch oder automatisch erstellte Tabellen mit Messdaten unterschiedlichster Art. \\
 Als Spezialfall sind Zeitreihendaten zu nennen. Hierbei handelt es Sich um Daten mit einem zeitlichem Ablauf, wie beispielsweise die Entwicklung von Temperatur über einen bestimmten Zeitraum.\\
-Die Speicherung solcher Daten sind relationale Datenbanken am besten geeignet. Der MARS Import speichert Zeitreihendaten einer InfluxDB\footnote{\url{https://influxdata.com/}}, welche speziell für diesen Zweck konzipiert wurde.\\
+Die Speicherung solcher Daten sind relationale Datenbanken am besten geeignet. Der MARS Import speichert Zeitreihendaten einer InfluxDB\footnote{\url{https://influxdata.com/}}, welche speziell für diesen Zweck konzipiert wurde.
 
 
 \subsection{Vektordaten}
-Vektordaten basieren auf mathematischen Funktionen und sind somit insbesondere für trigonometrische Formen und lineare Merkmale im Koordinatensystem geeignet. Sie können verlustfrei und beliebig im Raum skaliert werden.\\
+Vektordaten basieren auf mathematischen Funktionen und sind somit insbesondere für trigonometrische Formen und lineare Merkmale im Koordinatensystem geeignet. Sie können verlustfrei und beliebig im Raum skaliert werden.
 
 \subsubsection{Shapefile}
-Shapefiles, entwickelt von der Firma Esri, ist ein Format bestehend aus mindestens drei Dateien (.shp, .shx, .dbf), weitere Dateien können optional hinzugefügt werden. Shapefiles sind das, am häufigsten verwendetste Vektorformat, es wird von allen gängigen GIS Anwendungen unterstützt. Programme wie ArcMap und QGIS nutzen es standardmäßig beim exportieren von Vektorebenen.\\
+Shapefiles, entwickelt von der Firma Esri, ist ein Format bestehend aus mindestens drei Dateien (.shp, .shx, .dbf), weitere Dateien können optional hinzugefügt werden. Shapefiles sind das, am häufigsten verwendetste Vektorformat, es wird von allen gängigen GIS Anwendungen unterstützt. Programme wie ArcMap und QGIS nutzen es standardmäßig beim exportieren von Vektorebenen.
 
 \subsubsection{GeoJSON}
 GeoJSON\footnote{\url{http://geojson.org/}} ist ein offenes Format zur Speicherung von Geodaten. Entwickelt wird es von der \enquote{IETF Geographic JSON Working Group}. \\
-GeoJSON hat gegenüber Shapefiles den Vorteil, dass es einen minimalen Overhead besitzt und Menschen lesbar ist. GeoJSON lässt sich in jeder Sprache parsen, was insbesondere die Handhabung im Web vereinfacht.\\
+GeoJSON hat gegenüber Shapefiles den Vorteil, dass es einen minimalen Overhead besitzt und Menschen lesbar ist. GeoJSON lässt sich in jeder Sprache parsen, was insbesondere die Handhabung im Web vereinfacht.
 
 
 \subsection{Rasterdaten}
@@ -424,11 +424,11 @@ Rasterdaten werden aus einer Matrix von quadratischen Zellen gleicher Größe ge
 
 \subsubsection{GeoTIFF}
 TIFF(.tiff) ist ein Bildformat, welches Rasterdaten verlustfrei speichert. GeoTIFF erweitert dieses Format um Metadaten, wie der Projektion und den Geo-Koordinaten des Bildausschnittes. Diese Eigenschaften machen das Format attraktiv für die Speicherung großer Gebietskarten. Diese könne in Abhängigkeit zum erfassten Gebiet und dessen Auflösung mehrere Gigabyte umfassen. \\
-Für die Darstellung von großen Rasterdaten, insbesondere in einer Client \& Server Architektur sind GeoTIFF Dateien daher ungeeignet und werden zu diesem Zweck in eine Mercator Pyramide umgewandelt.\\
+Für die Darstellung von großen Rasterdaten, insbesondere in einer Client \& Server Architektur sind GeoTIFF Dateien daher ungeeignet und werden zu diesem Zweck in eine Mercator Pyramide umgewandelt.
 
 
 \subsection{Quadtree}
-Quadtrees\cite{QuadTrees} sind ein Referenzierungsmodell, zur Aufteilung von zweidimensionalen Flächen. Jede Fläche wird in genau vier Unterbereiche (Kindknoten) unterteilt. Dies geschieht rekursiv bis zur gewünschten Tiefe.\\
+Quadtrees\cite{QuadTrees} sind ein Referenzierungsmodell, zur Aufteilung von zweidimensionalen Flächen. Jede Fläche wird in genau vier Unterbereiche (Kindknoten) unterteilt. Dies geschieht rekursiv bis zur gewünschten Tiefe.
 
 
 \subsection{Mercator Pyramide}
@@ -449,7 +449,6 @@ Dieses Verfahren erlaubt es, dem Benutzer einer Webanwendung beliebig große Dat
 \label{Quadyeys}
 Die Bing Quadkeys benennen die Flächen einer Mercator Pyramide mit einem Wert. Gewöhnlich werden Mercator Pyramiden mit Z/X/Y bezeichnet, wobei Z die Detailstufe, X die X-Achse und Y die Y-Achse ausmacht.\\
 Quadkeys codieren die Position der Fläche, indem für jede Detailstufe eine Ziffer zwischen 0 und 3 hinzugefügt wird. Siehe hierfür Abb. \ref{img:bing_quads}.
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{img/bing_quads.png}\\
@@ -458,54 +457,54 @@ Quadkeys codieren die Position der Fläche, indem für jede Detailstufe eine Zif
 \end{figure}
 
 
+
 \section{Grundprojekt}
 Der Begriff Geoinformationssystem(GIS) umfasst die Speicherung, Manipulation, Organisation und Darstellung von räumliche Daten. Diese Daten werden im MARS Framework als Basis für Agentensimulationen genutzt.\\
 MARS DEIMOS stellt diese Daten dar und ermöglicht es dem Benutzer Daten für Simulationen auszuwählen. Um eine bessere Benutzbarkeit zu erreichen sollen die Daten auf Korrektheit geprüft werden.\\
 Eine unmittelbare Korrektur der erkannten Fehler soll nur in geringem Maße durchgeführt werden. Grund hierfür ist die Existenz von bekannten und etablierten GIS-Werkzeugen wie ArcGIS, QGIS und GRASS, die für derartige Aufgaben konzipiert wurden.\\
 Voraussetzung für ein zukunftssicheres Design sind, stabile und dokumentierte Softwarelösungen für die Analyse und Manipulation, sowie eine dauerhafte Speicherung der GEO-Daten.\\
-Ziel des Grundprojektes war es, die aktuelle Situation zu dokumentieren und Verbesserungsvorschläge zu erarbeiten.\\
+Ziel des Grundprojektes war es, die aktuelle Situation zu dokumentieren und Verbesserungsvorschläge zu erarbeiten.
 
 
 \subsection{Technologievergleich}
-Für die Verarbeitung von Geodaten gibt es zahlreiche Bibliotheken mit unterschiedlichen Einsatzgebieten. Folgende kommen für die Analyse und Manipulation von GIS-Daten in Betracht.\\
+Für die Verarbeitung von Geodaten gibt es zahlreiche Bibliotheken mit unterschiedlichen Einsatzgebieten. Folgende kommen für die Analyse und Manipulation von GIS-Daten in Betracht.
 
 \subsubsection{Geospatial Data Abstraction Library (GDAL) [C/C++]}
 GDAL ist eine, in C/C++ geschriebene Geo-Bibliothek für Raster und Vektordaten. Es wird in vielen Werkzeugen als Grundlage verwendet. Werkzeuge, die GDAL verwenden sind u.a. ArcGIS, QGIS, GRASS, Google Earth, die Programmiersprache \enquote{R}, sowie die im folgenden genannten Werkzeuge mit Außnahme GeoTools und dem GeoServer.\\
 GDAL über den Aufruf der Konsolenanwendung direkt zu nutzen ist möglich, jedoch nicht zu empfehlen. Insbesondere die Auswertung von Rückgabewerten ist mit der unmittelbaren Verwendung umständlich, da die Konsolenausgaben interpretiert werden müssen.\\
-Abhilfe können eine Vielzahl von GDAL Wrapper Bibliotheken schaffen. Diese ermöglichen eine bessere Handhabung.\\
+Abhilfe können eine Vielzahl von GDAL Wrapper Bibliotheken schaffen. Diese ermöglichen eine bessere Handhabung.
 
 \subsubsection{SharpMap [C\#]}
 SharpMap ist ein Geospatiale Bibliothek für C\#, welche bereits in MARS LIVE verwendet wird. SharpMap unterstützt verschiedene Vektorformate, darunter Shapefiles. Die Unterstützung von Rasterdaten geschieht durch GDAL. Für die Darstellung von Kartendaten kann der Web Map Service (WMS) der The Open Source Geospatial Foundation (OSGeo) verwendet werden.\\
-Die Dokumentation von SharpMap beschränkt sich auf 5 kurze Anwendungsbeispiele, eine komplette Klassendokumentation ist nicht vorhanden.\\
+Die Dokumentation von SharpMap beschränkt sich auf 5 kurze Anwendungsbeispiele, eine komplette Klassendokumentation ist nicht vorhanden.
 	
 \subsubsection{DotSpatial [C\#]}
-DotSpatial ist neben SharpMap eine weitere Möglichkeit Geospatiale Operation auf Geodaten in C\# durchzuführen. Im Vergleich zu SharpMap stehen dem Entwickler neben Tutorials und Code Ausschnitten auch ein Getting started Guide und eine SDK Dokumentation einiger Komponenten zur Verfügung.\\
+DotSpatial ist neben SharpMap eine weitere Möglichkeit Geospatiale Operation auf Geodaten in C\# durchzuführen. Im Vergleich zu SharpMap stehen dem Entwickler neben Tutorials und Code Ausschnitten auch ein Getting started Guide und eine SDK Dokumentation einiger Komponenten zur Verfügung.
 	
 \subsubsection{GeoTools [Java]}
 \label{GeoTools}
 GeoTools unterscheidet sich von den bereits genannten Werkzeugen insofern, als dass es in Java geschrieben wurde, welches bis jetzt nicht Teil der Websuite ist. Java als Sprache wird in der MARS Arbeitsgruppe bis jetzt nur im ConfigService eingesetzt. Durch den Einsatz von Docker ist dies allerdings nicht als Problem anzusehen, da eine heterogen gestaltete Softwarearchitektur dem Microservices Ansatz entspricht.\\
 Die Bibliothek basiert als einzige der genannten Lösungen nicht auf GDAL als Basis. GeoTools ist Teil der Open Source Geospatial Foundation (OSGeo).\\
-Es verfügt neben einem Quickstart Guide und einer API Dokumentation, über einen User Guide und zahlreiche Programmbeispiele. Die Dokumentationen sind ausgesprochen ausführlich und sehr aktuell. Das Projekt ist aktueller als jedes der anderen genannten Bibliotheken.\\
+Es verfügt neben einem Quickstart Guide und einer API Dokumentation, über einen User Guide und zahlreiche Programmbeispiele. Die Dokumentationen sind ausgesprochen ausführlich und sehr aktuell. Das Projekt ist aktueller als jedes der anderen genannten Bibliotheken.
 
 \subsubsection{GeoServer}
 \label{subsubsubsec:GeoServer}
 Der GeoServer ist eine Verwaltungssoftware für Geodaten, basierend auf Java und PostGIS. Unterstützt werden eine Vielzahl von Raster-/ und Vektorformaten. Der GeoServer erlaubt neben der Verwaltung auch die Bearbeitung von Geodaten, sowie eine Darstellung mit Hilfe von OpenLayers. All diese Funktionalitäten lassen sich über eine Weboberfläche bedienen.\\
-Mittels einer ausführlichen REST Schnittstelle lassen sich die Geoserver Abfragen in andere Anwendungen integrieren.\\
+Mittels einer ausführlichen REST Schnittstelle lassen sich die Geoserver Abfragen in andere Anwendungen integrieren.
 
 \subsubsection{GeoNode [Python]}
 GeoNode ist keine Bibliothek, es handelt sich hierbei um ein Content Management System (CMS) für Geodaten, basierend auf dem Python Webframework Django.\\
 Nach der Installation bietet GeoNode eine ansprechende Benutzeroberfläche, über die sich Raster-/ und Vektordaten importieren lassen. Auf Basis dieser Layer lassen sich Karten zusammenstellen.\\
-GeoNode speichert die importierten Daten nicht direkt in eine Datenbank, sondern nutzt eine Instanz des GeoServers (siehe Abs. \ref{subsubsubsec:GeoServer}). Obwohl der GeoServer ein Vielzahl von Formaten unterstützt erlaubt GeoNode derzeit (v2.3), nur den Import von Esri Shapefiles und GeoTIFF Dateien.\\
+GeoNode speichert die importierten Daten nicht direkt in eine Datenbank, sondern nutzt eine Instanz des GeoServers (siehe Abs. \ref{subsubsubsec:GeoServer}). Obwohl der GeoServer ein Vielzahl von Formaten unterstützt erlaubt GeoNode derzeit (v2.3), nur den Import von Esri Shapefiles und GeoTIFF Dateien.
 
 
 \subsection{Ergebnis}
-Im Grundprojekt wurde eine Anforderungsanalyse durchgeführt. Auf Basis der ermittelten Anforderung wurde entschieden, dass der GeoServer zukünftig wieder für die Verwaltung von Geodaten verwendet werden soll. Des weiteren wird für die Berechnungen von Geooperationen ein Microservice erstellt, der alle nötigen Geooperation durchführt. \\
+Im Grundprojekt wurde eine Anforderungsanalyse durchgeführt. Auf Basis der ermittelten Anforderung wurde entschieden, dass der GeoServer zukünftig wieder für die Verwaltung von Geodaten verwendet werden soll. Des weiteren wird für die Berechnungen von Geooperationen ein Microservice erstellt, der alle nötigen Geooperation durchführt.
 
 \subsubsection{Datenspeicherung}
 In der Vergangenheit wurde hiervon Abstand genommen, Performance Messungen im Rahmen des Grundprojektes haben jedoch gezeigt, dass ein entsprechend optimierter Geoserver durchaus in der Lage ist große Mengen an Geodaten zu verwalten.\\
 Getestet wurde die Importgeschwindigkeit mit jeweils einer kleinen und einer großen Esri Ascii(.asc) Datei und einem Shapefile(.shp). Die Kleinen Dateien haben, komprimiert in einer .zip Datei eine ungefähre Größe von 400kB und die großen Dateien eine Größe von 500MB.\\
 Es ist zu beachten, dass die Importzeiten unter localhost durchgeführt wurden und Die Ergebnisse Mittelwerte sind.\\
-
 \begin{table}[H]
 	{\tabulinesep=2mm
 	\begin{center}\begin{tabu}{ |c|r|r| }
@@ -526,10 +525,10 @@ Für die weiterführende Verarbeitung und die inhaltliche Validitätsprüfung wi
 \section{Hauptprojekt}
 Ziel des Hauptprojektes ist es, die spatiale Eingrenzung für alle Geodaten zu ermöglichen und die reduzierten Datensätze zu persistieren.\\
 Außerdem soll der GIS-Import für den GeoServer entwickelt werden.\\
-Des weiteren wird der Quad Algorithmus von Busch\cite{JanBusch} in die Websuite eingebaut.\\
+Des weiteren wird der Quad Algorithmus von Busch\cite{JanBusch} in die Websuite eingebaut.
 
 \subsection{Spatiale Eingrenzung}
-
+%TODO
 
 \subsection{Quad Algorithmus}
 Bei der Speicherung von Rasterdaten wird jeder Datensatz als einzelne Datei abgelegt und es wird für den schnellen Zugriff im Web eine Mercatur Pyramide (siehe \ref{MercatorPyramide}) generiert.\\
@@ -564,7 +563,6 @@ Spatiale Indikatoren können bei der räumlichen Analyse eingesetzt werden, um d
 Die Arbeitsgruppe um Hagenlocher et al. \cite{hagenlocher2014modeling} befasst sich mit den Ländern Westafrikas, da diese zu den am stärksten betroffenen, durch den Klimawandel gehören \cite{hamro2014livelihood}. Um besonders bedrohte Gebiete, sog. Hotspots zu extrahieren und diese Bereiche mit anderen vergleichbar zu machen wurde der spatial gemischte Indikator (SGI) entwickelt. Dieser stellt eine Weiterentwicklung des SI dar und wird mit Hilfe von arithmetischen Berechnungen aus verschiedenen homogenisierten Subindikatoren berechnet.\\
 
 Der SGI gibt einen räumlich abhängigen Wert an, der geographische Gebiete in Bezug auf eine bestimmte Kennzahl vergleichbar macht \cite{anselin1995local}. Zur Berechnung des SGI müssen die Datensätze zunächst wert-normalisiert und anschließend segmentiert(regionalisiert) und klassifiziert werden. Abb. \ref{img:Spatialer_Indikator} zeigt den allgemeinen Ablauf.\\
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{img/Spatialer_Indikator.png} \\
@@ -578,7 +576,7 @@ Für die Errechnung des SGI gelten bestimmt Prämissen, denen die Daten genügen
 Der gemischte Indikator über ein Bereich wir aus verschiedenen Datensätzen errechnet. Eine korrekte Aussage kann nur getroffen werden, wenn die Daten den gleichen geographischen Bereich referenzieren.\\
 Die Auflösung der Datensätze ist häufig unterschiedlich. Beispielsweise können Temperaturdaten stündlich aufgenommen sein und Niederschlagsdaten täglich. Eine entsprechende Inter-/ bzw. extrapolieren ist zwingend erforderlich.\\
 Die einzelnen Daten müssen in GIS Formaten vorliegen. Hierbei handelt es sich um Formate, die neben den eigentlichen Daten Metadaten abspeichern können. Gängige Formate sind: *.shp, *.asc oder GeoJSON.
-Die Layer, auf denen sich die Informationen befinden müssen georeferenziert sein, es muss also in den erwähnten Metadaten hinterlegt sein, für welchen Bereich und ggf. Zeitraum die Daten gültig sind.\\
+Die Layer, auf denen sich die Informationen befinden müssen georeferenziert sein, es muss also in den erwähnten Metadaten hinterlegt sein, für welchen Bereich und ggf. Zeitraum die Daten gültig sind.
 
 
 \subsection{Vorbereitung}
@@ -587,7 +585,6 @@ Die Layer, auf denen sich die Informationen befinden müssen georeferenziert sei
  Die Werte, der einzelnen Eingabeparameter müssen Wert-normalisiert werden. Üblich ist die Bildung des SGI über Farbwerte eins Graustufenbildes. Eine Normalisierung von 0 bis 255 ist hier der Regelfall. Abbildung \ref{img:Wertnormalisierung} zeigt die Formel zur Normalisierung.\\
  In Abhängig der Eingabewerte zueinander, ist es gegebenenfalls notwendig eine Gewichtung einfließen zu lassen. Diese ist Domain abhängig und kann nicht generell festgelegt werden.\\
  Abschließend wird aus jedem Teilquadranten der SGI gebildet.\\
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\columnwidth]{img/min_max_normalize.png} \\
@@ -609,7 +606,6 @@ Es kommen entsprechend des gewünschten Ergebnis andere Algorithmen zum Einsatz.
 
 \subsubsection{Verschneidung}
 Bei der Verschneidung wird aus den einzelnen Subindikatoren der Segmentierung und Klassifizierung, der SGI für einen Bereich errechnet. Hagenlocher et al. \cite{hagenlocher2014modeling} nutzt hierfür den Cumulative climate change impact (siehe Abb. \ref{img:CCI_Formel}).
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\columnwidth]{img/CCI_Formel.png} \\
@@ -628,8 +624,17 @@ Abb. \ref{img:Klimahotspots} zeigt ein mögliches Ergebnis.
 
 
 
-\section{Zusammenfassung und Ausblick}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\columnwidth]{img/CCI_Verschneidung.png} \\
+	\caption[]{CCI Verschneidung. Quelle: \cite{mariuszMaster}}
+	\label{img:CCIVerschneidung}
+\end{figure}
 
+
+
+\section{Zusammenfassung und Ausblick}
+%TODO
 
 
 \bibliographystyle{IEEEtran}
